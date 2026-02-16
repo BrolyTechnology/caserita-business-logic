@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  version_image: latest
+  version_pnpm: 10
+  version_node: 22.14.0
+
+jobs:
+  # 1️⃣ Instalación de dependencias y build
+  build-app:
+    runs-on: ubuntu-latest
+    outputs:
+      build-path: ${{ steps.package.outputs.build_path }}
+    steps:
+      - name: Generate timestamp
+        id: timestamp
+        run: |
+          TIMESTAMP=$(date +'%Y-%m-%d_%H:%M:%S')
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "The workflow was generated with date: $TIMESTAMP"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.version_pnpm }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.version_node }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run build
+        run: pnpm run build
+
+      - name: Package application
+        id: package
+        run: |
+          echo "📦 Packaging application into app.tar.gz..."
+
+          mkdir -p dist-package
+          cp -r src Dockerfile nest-cli.json package.json pnpm-lock.yaml tsconfig*.json dist/ dist-package/
+
+          tar -czf app.tar.gz -C dist-package .
+
+          echo "build_path=app.tar.gz" >> $GITHUB_OUTPUT
+          echo "✅ Application packaged successfully."
+
+      - name: Verify tarball
+        run: |
+          echo "🔍 Verifying app.tar.gz..."
+          file app.tar.gz
+          tar -tzf app.tar.gz > /dev/null
+          echo "✅ Verification completed."
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-tarball
+          path: app.tar.gz
+          retention-days: 3
+
+  # 2️⃣ Publish GitHub Release
+  release:
+    runs-on: ubuntu-latest
+    needs: build-app
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-tarball
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app.tar.gz
+          tag_name: ${{ env.version_image }}
+          name: Release ${{ env.version_image }}
+          body: "📦 CASERITA-BUSINESS-LOGIC release ${{ env.version_image }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN_RELEASE_ASSET }}

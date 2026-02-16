@@ -1,0 +1,15 @@
+services:
+  caserita-business-logic:
+    container_name: caserita-business-logic
+    image: caserita-business-logic-app-local:v1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.development.local
+    # ports:
+    #   - '3000:3000'
+    volumes: []
+    environment:
+      - NODE_ENV=production
+      - NATS_SERVERS=nats://nats-server
