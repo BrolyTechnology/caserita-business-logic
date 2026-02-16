@@ -1,0 +1,4 @@
+export enum PersonTypeEnum {
+  NATURAL_PERSON = 'PERSONA_NATURAL',
+  LEGAL_PERSON = 'PERSONA_JURIDICA',
+}

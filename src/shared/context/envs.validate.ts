@@ -33,4 +33,5 @@ export const schemaEnvVars = Joi.object({
   BCRYPT_SALT_OR_ROUNDS: Joi.number().default(10),
   // PROXIES
   BASE_URL_DATTEBAYO: Joi.string().uri().required(),
+  TAX_IDENTITY_VALIDATION_BASE_URL: Joi.string().uri().required(),
 });
