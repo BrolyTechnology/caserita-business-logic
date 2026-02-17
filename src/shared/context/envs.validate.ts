@@ -31,6 +31,9 @@ export const schemaEnvVars = Joi.object({
     .when('LOGGER_CLOUD', { is: LogService.LOCAL, then: Joi.string().allow('') }),
   // HASHING
   BCRYPT_SALT_OR_ROUNDS: Joi.number().default(10),
+  // JSON WEB TOKEN
+  JWT_KEY_SECRET: Joi.string().required(),
+  JWT_EXPIRE_IN: Joi.string().required(),
   // PROXIES
   BASE_URL_DATTEBAYO: Joi.string().uri().required(),
   TAX_IDENTITY_VALIDATION_BASE_URL: Joi.string().uri().required(),

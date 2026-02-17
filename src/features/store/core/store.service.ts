@@ -4,7 +4,7 @@ import { RpcException } from '@nestjs/microservices';
 import * as bcrypt from 'bcrypt';
 import { StoreRepository } from './repository/store.repository';
 import { CreateStoreResponse } from './dto/out/store.out';
-import { CreateStoreRequest } from './dto/in/store.in';
+import { CreateStoreRequest, FindStoreRequest } from './dto/in/store.in';
 import { Store } from './entity/store.entity';
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
 import { CatalogExeptionCode, getExpetionMessage } from '@shared/catalogs/exception.catalog';
@@ -28,6 +28,10 @@ export class StoreService {
 
   async findById(id: string): Promise<Store | null> {
     return this.repository.findById(id);
+  }
+
+  async finBasic(request: FindStoreRequest): Promise<Partial<Store> | null> {
+    return this.repository.findBasic(request);
   }
 
   async create(request: CreateStoreRequest): Promise<CreateStoreResponse> {
