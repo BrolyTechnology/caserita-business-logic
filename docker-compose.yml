@@ -7,9 +7,15 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env.development.local
-    # ports:
-    #   - '3000:3000'
+    ports:
+      - '3000:3000'
     volumes: []
     environment:
       - NODE_ENV=production
       - NATS_SERVERS=nats://nats-server
+    networks:
+      - caserita-network-ecosystem
+
+networks:
+  caserita-network-ecosystem:
+    external: true

@@ -48,13 +48,13 @@ export class StoreManager implements StoreRepository {
   async isUnique(entry: Record<string, string>): Promise<boolean> {
     return this.repository
       .createQueryBuilder('st')
-      .where('st.documentNumber_index = :documentNumber_index', {
-        ruc_index: this.hashTransformer.to(entry.documentNumber),
+      .where('st.isDeleted = :isDeleted', { isDeleted: false })
+      .andWhere('st.documentNumber_index = :documentNumber_index', {
+        documentNumber_index: this.hashTransformer.to(entry.documentNumber),
       })
       .orWhere(`st.email_index = :email_index`, {
         email_index: this.hashTransformer.to(entry.email),
       })
-      .where('st.isDeleted = :isDeleted', { isDeleted: false })
       .getExists();
   }
 

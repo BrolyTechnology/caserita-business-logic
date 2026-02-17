@@ -20,13 +20,13 @@ import { columnsStoreEncrypt } from '@features/store/core/entity/store.entity.mo
 
 @Module({
   imports: [
-    CommonLoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
       envFilePath: ['.env.development.local'],
       validationSchema: schemaEnvVars,
     }),
+    CommonLoggerModule,
     CommonResponseModule,
     CommonDatabaseModule.register([
       {

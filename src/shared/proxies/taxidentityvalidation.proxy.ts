@@ -8,7 +8,8 @@ import {
   FindLegalRepresentativeByRucResponse,
   FindPersonByDniResponse,
 } from './dto/out/taxidentityvalidation.out';
-import { catchError, firstValueFrom, map, of } from 'rxjs';
+import { catchError, firstValueFrom, map } from 'rxjs';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class TaxidentityvalidationProxy {
@@ -28,7 +29,7 @@ export class TaxidentityvalidationProxy {
       this.httpClient.get(`${this.baseUrl}/sunat/company/${input.ruc}`).pipe(
         map((response) => response.data),
         catchError((error: AxiosError) => {
-          return of(error.response?.data);
+          throw new RpcException(error.response?.data!);
         }),
       ),
     );
@@ -41,7 +42,7 @@ export class TaxidentityvalidationProxy {
       this.httpClient.get(`${this.baseUrl}/sunat/representate/${input.ruc}`).pipe(
         map((response) => response.data),
         catchError((error: AxiosError) => {
-          return of(error.response?.data);
+          throw new RpcException(error.response?.data!);
         }),
       ),
     );
@@ -54,7 +55,7 @@ export class TaxidentityvalidationProxy {
       this.httpClient.get(`${this.baseUrl}/reniec/person/${input.dni}`).pipe(
         map((response) => response.data),
         catchError((error: AxiosError) => {
-          return of(error.response?.data);
+          throw new RpcException(error.response?.data!);
         }),
       ),
     );

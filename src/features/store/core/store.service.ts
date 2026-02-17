@@ -58,11 +58,9 @@ export class StoreService {
       });
     }
 
-    const company = (
-      await this.taxidentityvalidationProxy.findCompanyByRuc({
-        ruc: request.documentNumber,
-      })
-    )?.data;
+    const { data: company } = await this.taxidentityvalidationProxy.findCompanyByRuc({
+      ruc: request.documentNumber,
+    });
 
     if (!company) {
       throw new RpcException({
