@@ -9,6 +9,7 @@ import {
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
 import { PersonTypeEnum } from './types/personType.enum';
 import { PlanTypeEnum } from './types/planType.enum';
+import { CurrencyCodeEnum, CurrencySymbolEnum } from '@shared/interfaces/currency.enum';
 
 @Entity({ name: 'stores' })
 export class Store {
@@ -27,6 +28,9 @@ export class Store {
 
   @Column({ comment: 'Logo url by store', type: 'text', nullable: true, default: null })
   logoUrl?: string;
+
+  @Column({ comment: 'Cover url by store', type: 'text', nullable: true, default: null })
+  coverUrl?: string;
 
   @Column({ comment: 'Logo base64 by store', type: 'text', nullable: true, default: null })
   logoBase64?: Base64URLString;
@@ -50,6 +54,12 @@ export class Store {
   @Column({ comment: 'Phone Store', type: 'text', nullable: true, default: null })
   phone?: string;
 
+  @Column({ comment: 'Whatsapp Store', type: 'text', nullable: true, default: null })
+  whatsapp?: string;
+
+  @Column({ comment: 'Telegram Store', type: 'text', nullable: true, default: null })
+  telegram?: string;
+
   @Column({ comment: 'Constitution date store', type: 'date', nullable: true, default: null })
   constitutionDate?: Date;
 
@@ -61,6 +71,15 @@ export class Store {
 
   @Column({ comment: 'Type of taxpayer by store', type: 'varchar', nullable: false })
   typeOfTaxpayer: string;
+
+  @Column({
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+    nullable: false,
+    default: 0,
+  })
+  taxRate: number;
 
   @Column({
     type: 'enum',
@@ -79,6 +98,24 @@ export class Store {
     default: PlanTypeEnum.FREE,
   })
   planType: PlanTypeEnum;
+
+  @Column({
+    type: 'enum',
+    enum: CurrencyCodeEnum,
+    comment: 'Currency code price by the store',
+    nullable: true,
+    default: null,
+  })
+  currencyCode?: CurrencyCodeEnum;
+
+  @Column({
+    type: 'enum',
+    enum: CurrencySymbolEnum,
+    comment: 'Currency symbol price by the store',
+    nullable: true,
+    default: null,
+  })
+  currencySymbol?: CurrencySymbolEnum;
 
   @Column({ comment: 'Accept the terms and conditions', type: 'boolean', default: false })
   termsAndConditions: boolean;

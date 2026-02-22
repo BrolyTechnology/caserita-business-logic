@@ -17,6 +17,10 @@ import { schemaEnvVars } from '@shared/context/envs.validate';
 import { FeaturesModule } from './features/features.module';
 import { Store } from '@features/store/core/entity/store.entity';
 import { columnsStoreEncrypt } from '@features/store/core/entity/store.entity.module';
+import { ProductContainer } from '@features/product/core/entity/productContainer.entity';
+import { ProductSection } from '@features/product/core/entity/productSection.entity';
+import { Product } from '@features/product/core/entity/product.entity';
+import { ProductVariant } from '@features/product/core/entity/productVariant.entity';
 
 @Module({
   imports: [
@@ -32,7 +36,7 @@ import { columnsStoreEncrypt } from '@features/store/core/entity/store.entity.mo
       {
         name: DatabaseConnectionType.POSTGRES_CONNECTION,
         type: DatabaseEnumType.POSTGES,
-        entities: [Store],
+        entities: [Store, ProductContainer, ProductSection, Product, ProductVariant],
         imports: [CommonEncryptedModule.register(EncryptedProviderType.DATABASE)],
         inject: [ValueTransformer, HashTransformer],
         columnsTransformers: [...columnsStoreEncrypt],

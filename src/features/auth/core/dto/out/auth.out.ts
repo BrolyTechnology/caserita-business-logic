@@ -3,5 +3,20 @@ export interface GenerateTokenResponse {
 }
 
 export interface VerifyTokenResponse {
-  isValidToken: boolean
+  sub: string;
+  documentType: string;
+  documentNumber: string;
+  companyName: string;
+  comercialName: string;
+  email: string;
+  phone: string;
+  password: string;
+  constitutionDate: Date;
+  personType: string;
+  planType: string;
+  isPublished: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  iat: number;
+  exp: number;
 }

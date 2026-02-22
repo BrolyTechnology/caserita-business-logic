@@ -4,9 +4,10 @@ import { HealthModule } from './health/health.module';
 import { ProxiesModule } from '@shared/proxies/proxies.module';
 import { StoreModule } from './store/store.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [StoreModule, AuthModule]
+  imports: [StoreModule, AuthModule, ProductModule]
 })
 export class FeaturesModule {
   static register(): DynamicModule {

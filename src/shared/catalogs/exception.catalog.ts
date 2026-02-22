@@ -2,9 +2,10 @@ export enum CatalogExeptionCode {
   ERR_STORE_ALREADY_EXIST = 'ERR_STORE_ALREADY_EXIST',
   ERR_STORE_TERMS_AND_CONDITIONS = 'ERR_STORE_TERMS_AND_CONDITIONS',
   ERR_STORE_INVALID_SUNAT = 'ERR_STORE_INVALID_SUNAT',
+  ERROR_STORE_NOT_FOUND = 'ERROR_STORE_NOT_FOUND',
   ERROR_AUTH_STORE_NOT_EXIST = 'ERROR_AUTH_STORE_NOT_EXIST',
   ERROR_AUTH_PASSWORD_INVALID = 'ERROR_AUTH_PASSWORD_INVALID',
-  ERROR_TOKEN_ACCESS_INVALID = 'ERROR_TOKEN_ACCESS_INVALID'
+  ERROR_TOKEN_ACCESS_INVALID = 'ERROR_TOKEN_ACCESS_INVALID',
 }
 
 type CatalogExceptionStrings = keyof typeof CatalogExeptionCode;
@@ -20,6 +21,10 @@ export function getExpetionMessage(key: CatalogExceptionStrings) {
 
   if (key === CatalogExeptionCode.ERR_STORE_INVALID_SUNAT) {
     return 'The entered RUC does not exist in Sunat, or is incorrect';
+  }
+
+  if (key === CatalogExeptionCode.ERROR_STORE_NOT_FOUND) {
+    return 'The store not found';
   }
 
   if (key === CatalogExeptionCode.ERROR_AUTH_STORE_NOT_EXIST) {

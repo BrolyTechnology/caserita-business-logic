@@ -61,14 +61,12 @@ export class AuthService {
   }
 
   async verifyToken(request: VerifyTokenRequest): Promise<VerifyTokenResponse> {
-    const result = await this.jwtService.verifyAsync(request.token).catch(() => {
+    return this.jwtService.verifyAsync(request.token).catch(() => {
       throw new RpcException({
         status: HttpStatus.FORBIDDEN,
         errorCode: CatalogExeptionCode.ERROR_TOKEN_ACCESS_INVALID,
         message: getExpetionMessage(CatalogExeptionCode.ERROR_TOKEN_ACCESS_INVALID),
       });
-    });
-
-    return { isValidToken: !!result };
+    });;
   }
 }
