@@ -6,6 +6,7 @@ export enum CatalogExeptionCode {
   ERROR_AUTH_STORE_NOT_EXIST = 'ERROR_AUTH_STORE_NOT_EXIST',
   ERROR_AUTH_PASSWORD_INVALID = 'ERROR_AUTH_PASSWORD_INVALID',
   ERROR_TOKEN_ACCESS_INVALID = 'ERROR_TOKEN_ACCESS_INVALID',
+  ERR_PRODUCT_CONTAINER_NOT_FOUND = 'ERR_PRODUCT_CONTAINER_NOT_FOUND',
 }
 
 type CatalogExceptionStrings = keyof typeof CatalogExeptionCode;
@@ -37,5 +38,9 @@ export function getExpetionMessage(key: CatalogExceptionStrings) {
 
   if (key === CatalogExeptionCode.ERROR_TOKEN_ACCESS_INVALID) {
     return 'The token provider is invalid';
+  }
+
+  if (key === CatalogExeptionCode.ERR_PRODUCT_CONTAINER_NOT_FOUND) {
+    return 'The product container not found';
   }
 }

@@ -41,7 +41,7 @@ export class ProductSection {
     type: 'enum',
     enum: ProductSectionDisplayModeEnum,
     nullable: false,
-    default: ProductSectionDisplayModeEnum.LIST,
+    default: ProductSectionDisplayModeEnum.GRID,
   })
   displayMode: ProductSectionDisplayModeEnum;
 
