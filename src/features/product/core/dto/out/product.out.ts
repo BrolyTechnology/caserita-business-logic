@@ -5,3 +5,11 @@ export interface CreateProductContainerResponse {
 export interface CreateProductSectionResponse {
   id: string;
 }
+
+export interface CreateProductResponse {
+  id: string;
+}
+
+export interface CreateProductVariantResponse {
+  id: string;
+}

@@ -1,5 +1,6 @@
-import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString, Matches } from 'class-validator';
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
+import { regex } from '@shared/utils/regex.util';
 
 export class CreateInputValidator {
   @IsString()
@@ -9,6 +10,9 @@ export class CreateInputValidator {
 
   @IsString()
   @IsNotEmpty()
+  @Matches(regex.ruc, {
+    message: 'The RUC must begin with 10 or 20 and have exactly 11 numerical digits',
+  })
   public documentNumber: string;
 
   @IsEmail()

@@ -68,7 +68,7 @@ export class Product {
     nullable: true,
     default: null,
   })
-  basePrice?: number;
+  basePrice?: number | null;
 
   @Column({
     comment: 'Original price before discount, for comparison display',
@@ -78,7 +78,7 @@ export class Product {
     nullable: true,
     default: null,
   })
-  comparePrice?: number;
+  comparePrice?: number | null;
 
   @Column({
     comment: 'Whether this product is highlighted/featured',
@@ -100,6 +100,9 @@ export class Product {
   @JoinColumn({ name: 'productSectionId' })
   productSection?: ProductSection;
 
-  @OneToMany(() => ProductVariant, (variant) => variant.product)
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   productVariants?: ProductVariant[];
 }
