@@ -13,7 +13,7 @@ import { ProductSectionDisplayModeEnum } from './types/productSectionDisplayMode
 import { ProductContainer } from './productContainer.entity';
 import { Product } from './product.entity';
 
-@Entity({ name: 'productSections' })
+@Entity({ name: 'productSection' })
 export class ProductSection {
   @PrimaryGeneratedColumn('uuid')
   id: string;

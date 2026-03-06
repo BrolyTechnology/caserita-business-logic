@@ -11,7 +11,7 @@ import { PersonTypeEnum } from './types/personType.enum';
 import { PlanTypeEnum } from './types/planType.enum';
 import { CurrencyCodeEnum, CurrencySymbolEnum } from '@shared/interfaces/currency.enum';
 
-@Entity({ name: 'stores' })
+@Entity({ name: 'store' })
 export class Store {
   @PrimaryGeneratedColumn('uuid')
   id: string;

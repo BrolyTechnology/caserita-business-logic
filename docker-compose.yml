@@ -8,13 +8,13 @@ services:
     env_file:
       - .env.development.local
     ports:
-      - '3000:3000'
+      - '3030:3030'
     volumes: []
     environment:
       - NODE_ENV=production
       - NATS_SERVERS=nats://nats-server
-      - PORT=3000
-      - TAX_IDENTITY_VALIDATION_BASE_URL=http://caserita-taxidentityvalidation-ms:3001/taxidentityvalidations
+      - PORT=3030
+      - TAX_IDENTITY_VALIDATION_BASE_URL=http://caserita-taxidentityvalidation-ms:3031/taxidentityvalidations
     networks:
       - caserita-network-ecosystem
 

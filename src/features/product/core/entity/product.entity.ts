@@ -12,7 +12,7 @@ import { ProductTypeEnum } from './types/productType.enum';
 import { ProductSection } from './productSection.entity';
 import { ProductVariant } from './productVariant.entity';
 
-@Entity({ name: 'products' })
+@Entity({ name: 'product' })
 export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string;
