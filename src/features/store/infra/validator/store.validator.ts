@@ -1,4 +1,16 @@
-import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsString, Matches } from 'class-validator';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsArray,
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsString,
+  Matches,
+} from 'class-validator';
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
 import { regex } from '@shared/utils/regex.util';
 
@@ -25,4 +37,32 @@ export class CreateInputValidator {
 
   @IsBoolean()
   public termsAndConditions: boolean;
+}
+
+class LatLngLiteral {
+  @IsNotEmpty()
+  @IsNumber()
+  public lat: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  public lng: number;
+}
+
+export class UpSertStoreLocationValidator {
+  @IsString()
+  @IsNotEmpty()
+  public storeId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public address: string;
+
+  @IsString()
+  @IsNotEmpty()
+  public reference: string;
+
+  @IsObject()
+  @IsNotEmpty()
+  public addressPointCoordinates: LatLngLiteral;
 }

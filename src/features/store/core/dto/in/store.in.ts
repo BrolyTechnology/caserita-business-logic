@@ -12,3 +12,15 @@ export interface CreateStoreRequest {
   password: string;
   termsAndConditions: boolean;
 }
+
+interface addressPointCoordinates {
+  lat: number;
+  lng: number;
+}
+
+export interface UpSertStoreLocationRequest {
+  storeId: string;
+  address: string;
+  reference: string;
+  addressPointCoordinates: addressPointCoordinates;
+}

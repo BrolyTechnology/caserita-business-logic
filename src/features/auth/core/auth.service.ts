@@ -48,6 +48,7 @@ export class AuthService {
       documentNumber: input.documentNumber,
       companyName: input.companyName,
       comercialName: input.comercialName,
+      logoUrl: input.logoUrl,
       email: input.email,
       phone: input.phone,
       password: input.password,

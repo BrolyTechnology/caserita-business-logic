@@ -5,18 +5,25 @@ import { Repository } from 'typeorm';
 import { DatabaseConnectionType } from 'broly-software-core/packages/common-database';
 import { HashTransformer } from 'broly-software-core/packages/common-encrypted';
 import { Store } from '@features/store/core/entity/store.entity';
+import { StoreLocation } from '@features/store/core/entity/storeLocation.entity';
 import { CreateStoreResponse } from '@features/store/core/dto/out/store.out';
 import { FindStoreRequest } from '@features/store/core/dto/in/store.in';
 import { toStoreBasic } from '@features/store/core/mapper/store.mapper';
+import { BaseCreateResponse } from '@shared/interfaces/out/base.out';
 
 @Injectable()
 export class StoreManager implements StoreRepository {
   constructor(
     @InjectRepository(Store, DatabaseConnectionType.POSTGRES_CONNECTION)
     private readonly repository: Repository<Store>,
+
+    @InjectRepository(StoreLocation, DatabaseConnectionType.POSTGRES_CONNECTION)
+    private readonly locationRepository: Repository<StoreLocation>,
+
     private readonly hashTransformer: HashTransformer,
   ) {}
 
+  // Store
   async findById(id: string): Promise<Store | null> {
     return this.repository.findOne({ where: { id, isDeleted: false } });
   }
@@ -63,5 +70,22 @@ export class StoreManager implements StoreRepository {
     const result = await this.repository.save(store);
 
     return { id: result.id };
+  }
+
+
+  // Store location
+  async findLocationByStore(storeId: string): Promise<StoreLocation | null> {
+    return this.locationRepository.findOne({ where: { storeId } });
+  }
+
+  async createLocation(entry: Partial<StoreLocation>): Promise<BaseCreateResponse> {
+    const location = this.locationRepository.create(entry);
+    const result = await this.locationRepository.save(location);
+
+    return { id: result.id };
+  }
+
+  async updateLocation(id: string, entry: Partial<StoreLocation>): Promise<void> {
+    await this.locationRepository.update({ id }, entry);
   }
 }

@@ -4,7 +4,11 @@ import { RpcException } from '@nestjs/microservices';
 import * as bcrypt from 'bcrypt';
 import { StoreRepository } from './repository/store.repository';
 import { CreateStoreResponse } from './dto/out/store.out';
-import { CreateStoreRequest, FindStoreRequest } from './dto/in/store.in';
+import {
+  CreateStoreRequest,
+  FindStoreRequest,
+  UpSertStoreLocationRequest,
+} from './dto/in/store.in';
 import { Store } from './entity/store.entity';
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
 import { CatalogExeptionCode, getExpetionMessage } from '@shared/catalogs/exception.catalog';
@@ -12,6 +16,9 @@ import { TaxidentityvalidationProxy } from '@shared/proxies/taxidentityvalidatio
 import { regex } from '@shared/utils/regex.util';
 import { PersonTypeEnum } from './entity/types/personType.enum';
 import { PlanTypeEnum } from './entity/types/planType.enum';
+import { StoreLocation } from './entity/storeLocation.entity';
+import { BaseCreateResponse } from '@shared/interfaces/out/base.out';
+import { GeometryEnum } from './entity/types/geometry.enum';
 
 @Injectable()
 export class StoreService {
@@ -26,6 +33,7 @@ export class StoreService {
     this.bcryptSaltOrRounds = this.configService.get<number>('BCRYPT_SALT_OR_ROUNDS')!;
   }
 
+  // Store
   async findById(id: string): Promise<Store | null> {
     return this.repository.findById(id);
   }
@@ -97,5 +105,61 @@ export class StoreService {
     store.isEnabled = true;
 
     return this.repository.create(store);
+  }
+
+  // Store location
+  async findLocationByStore(storeId: string): Promise<StoreLocation | null> {
+    return this.repository.findLocationByStore(storeId);
+  }
+
+  async createLocation(request: UpSertStoreLocationRequest): Promise<BaseCreateResponse> {
+    const location = new StoreLocation();
+
+    const store = await this.repository.findById(request.storeId);
+
+    if (!store) {
+      throw new RpcException({
+        status: HttpStatus.BAD_REQUEST,
+        errorCode: CatalogExeptionCode.ERROR_STORE_NOT_FOUND,
+        message: getExpetionMessage(CatalogExeptionCode.ERROR_STORE_NOT_FOUND),
+      });
+    }
+
+    const { lng, lat } = request.addressPointCoordinates;
+    const coordinates: number[] = [lng, lat]; //[longitude, latitude]
+
+    location.storeId = store.id;
+    location.address = String(request.address).trim().toUpperCase();
+    location.reference = String(request.reference).trim().toUpperCase();
+    location.geographicalLocation = {
+      type: GeometryEnum.Point,
+      coordinates,
+    };
+
+    return this.repository.createLocation(location);
+  }
+
+  async updateLocation(request: UpSertStoreLocationRequest): Promise<void> {
+    const location = await this.findLocationByStore(request.storeId!);
+
+    if (!location) {
+      throw new RpcException({
+        status: HttpStatus.NOT_FOUND,
+        errorCode: CatalogExeptionCode.ERROR_STORE_LOCATION_NOT_FOUND,
+        message: getExpetionMessage(CatalogExeptionCode.ERROR_STORE_LOCATION_NOT_FOUND),
+      });
+    }
+
+    const { lng, lat } = request.addressPointCoordinates;
+    const coordinates: number[] = [lng, lat]; //[longitude, latitude]
+
+    location.address = String(request.address).trim().toUpperCase();
+    location.reference = String(request.reference).trim().toUpperCase();
+    location.geographicalLocation = {
+      type: GeometryEnum.Point,
+      coordinates,
+    };
+
+    await this.repository.updateLocation(location.id, location);
   }
 }

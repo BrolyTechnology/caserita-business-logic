@@ -1,13 +1,20 @@
-import { CreateStoreRequest, FindStoreRequest } from '@features/store/core/dto/in/store.in';
+import {
+  CreateStoreRequest,
+  FindStoreRequest,
+  UpSertStoreLocationRequest,
+} from '@features/store/core/dto/in/store.in';
 import { CreateStoreResponse } from '@features/store/core/dto/out/store.out';
 import { Store } from '@features/store/core/entity/store.entity';
+import { StoreLocation } from '@features/store/core/entity/storeLocation.entity';
 import { StoreService } from '@features/store/core/store.service';
 import { Injectable } from '@nestjs/common';
+import { BaseCreateResponse } from '@shared/interfaces/out/base.out';
 
 @Injectable()
 export class StoreBridge {
   constructor(private readonly storeService: StoreService) {}
 
+  // Store
   async findById(id: string): Promise<Store | null> {
     return this.storeService.findById(id);
   }
@@ -18,5 +25,18 @@ export class StoreBridge {
 
   async create(request: CreateStoreRequest): Promise<CreateStoreResponse> {
     return this.storeService.create(request);
+  }
+
+  // Store location
+  async findLocationByStore(storeId: string): Promise<StoreLocation | null> {
+    return this.storeService.findLocationByStore(storeId);
+  }
+
+  async createLocation(request: UpSertStoreLocationRequest): Promise<BaseCreateResponse> {
+    return this.storeService.createLocation(request);
+  }
+
+  async updateLocation(request: UpSertStoreLocationRequest): Promise<void> {
+    return this.storeService.updateLocation(request);
   }
 }
