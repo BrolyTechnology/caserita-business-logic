@@ -22,6 +22,7 @@ import { ProductSection } from '@features/product/core/entity/productSection.ent
 import { Product } from '@features/product/core/entity/product.entity';
 import { ProductVariant } from '@features/product/core/entity/productVariant.entity';
 import { StoreLocation } from '@features/store/core/entity/storeLocation.entity';
+import { StoreHours } from '@features/store/core/entity/storeHours.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { StoreLocation } from '@features/store/core/entity/storeLocation.entity'
       {
         name: DatabaseConnectionType.POSTGRES_CONNECTION,
         type: DatabaseEnumType.POSTGES,
-        entities: [Store, StoreLocation, ProductContainer, ProductSection, Product, ProductVariant],
+        entities: [Store, StoreLocation, StoreHours, ProductContainer, ProductSection, Product, ProductVariant],
         imports: [CommonEncryptedModule.register(EncryptedProviderType.DATABASE)],
         inject: [ValueTransformer, HashTransformer],
         columnsTransformers: [...columnsStoreEncrypt],

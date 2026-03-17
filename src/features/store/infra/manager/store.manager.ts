@@ -10,6 +10,7 @@ import { CreateStoreResponse } from '@features/store/core/dto/out/store.out';
 import { FindStoreRequest } from '@features/store/core/dto/in/store.in';
 import { toStoreBasic } from '@features/store/core/mapper/store.mapper';
 import { BaseCreateResponse } from '@shared/interfaces/out/base.out';
+import { StoreHours } from '@features/store/core/entity/storeHours.entity';
 
 @Injectable()
 export class StoreManager implements StoreRepository {
@@ -20,9 +21,11 @@ export class StoreManager implements StoreRepository {
     @InjectRepository(StoreLocation, DatabaseConnectionType.POSTGRES_CONNECTION)
     private readonly locationRepository: Repository<StoreLocation>,
 
+    @InjectRepository(StoreHours, DatabaseConnectionType.POSTGRES_CONNECTION)
+    private readonly storeHoursRepository: Repository<StoreHours>,
+
     private readonly hashTransformer: HashTransformer,
   ) {}
-
   // Store
   async findById(id: string): Promise<Store | null> {
     return this.repository.findOne({ where: { id, isDeleted: false } });
@@ -48,7 +51,7 @@ export class StoreManager implements StoreRepository {
 
     const result = await buildQuery.getOne();
 
-    if (!result) return null
+    if (!result) return null;
     return toStoreBasic(result);
   }
 
@@ -72,7 +75,6 @@ export class StoreManager implements StoreRepository {
     return { id: result.id };
   }
 
-
   // Store location
   async findLocationByStore(storeId: string): Promise<StoreLocation | null> {
     return this.locationRepository.findOne({ where: { storeId } });
@@ -87,5 +89,32 @@ export class StoreManager implements StoreRepository {
 
   async updateLocation(id: string, entry: Partial<StoreLocation>): Promise<void> {
     await this.locationRepository.update({ id }, entry);
+  }
+
+  // Store hours
+  async findAllStoreHours(storeId: string): Promise<StoreHours[]> {
+    return this.storeHoursRepository.find({
+      where: { storeId },
+      order: { closesAt: 'DESC' }
+    });
+  }
+
+  async findStoreHours(id: string): Promise<StoreHours | null> {
+    return this.storeHoursRepository.findOne({ where: { id } });
+  }
+
+  async createStoreHours(entry: Partial<StoreHours>): Promise<BaseCreateResponse> {
+    const hours = this.storeHoursRepository.create(entry);
+    const result = await this.storeHoursRepository.save(hours);
+
+    return { id: result.id }
+  }
+
+  async updateStoreHours(id: string, entry: Partial<StoreHours>): Promise<void> {
+    await this.storeHoursRepository.update({ id }, entry);
+  }
+
+  async deleteStoreHours(id: string): Promise<void> {
+    await this.storeHoursRepository.delete(id);
   }
 }

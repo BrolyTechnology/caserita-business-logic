@@ -1,4 +1,5 @@
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
+import { DayOfWeek } from '../../entity/types/dayOfWeek.enum';
 
 export interface FindStoreRequest {
   documentNumber?: string;
@@ -23,4 +24,13 @@ export interface UpSertStoreLocationRequest {
   address: string;
   reference: string;
   addressPointCoordinates: addressPointCoordinates;
+}
+
+export interface UpSertStoreHoursRequest {
+  storeId: string;
+  dayOfWeek: DayOfWeek[];
+  opensAt: Date | null;
+  closesAt: Date | null;
+  isAllDay: boolean;
+  isActive?: boolean;
 }

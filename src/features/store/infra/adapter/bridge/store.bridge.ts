@@ -1,6 +1,7 @@
 import {
   CreateStoreRequest,
   FindStoreRequest,
+  UpSertStoreHoursRequest,
   UpSertStoreLocationRequest,
 } from '@features/store/core/dto/in/store.in';
 import { CreateStoreResponse } from '@features/store/core/dto/out/store.out';
@@ -38,5 +39,26 @@ export class StoreBridge {
 
   async updateLocation(request: UpSertStoreLocationRequest): Promise<void> {
     return this.storeService.updateLocation(request);
+  }
+
+  // Store hours
+  async findAllStoreHours(storeId: string) {
+    return this.storeService.findAllStoreHours(storeId);
+  }
+
+  async findStoreHours(id: string) {
+    return this.storeService.findStoreHours(id);
+  }
+
+  async createStoreHours(request: UpSertStoreHoursRequest): Promise<BaseCreateResponse> {
+    return this.storeService.createStoreHours(request);
+  }
+
+  async updateStoreHours(id: string, request: UpSertStoreHoursRequest): Promise<void> {
+    return this.storeService.updateStoreHours(id, request);
+  }
+
+  async deleteStoreHours(id: string) {
+    return this.storeService.deleteStoreHours(id);
   }
 }

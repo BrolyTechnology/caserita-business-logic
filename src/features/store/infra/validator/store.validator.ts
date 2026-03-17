@@ -1,18 +1,20 @@
 import {
-  ArrayMaxSize,
-  ArrayMinSize,
   IsArray,
   IsBoolean,
+  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsObject,
+  IsOptional,
   IsString,
   Matches,
 } from 'class-validator';
 import { DocumentTypeEnum } from '@shared/interfaces/document.enum';
 import { regex } from '@shared/utils/regex.util';
+import { DayOfWeek } from '@features/store/core/entity/types/dayOfWeek.enum';
+import { Type } from 'class-transformer';
 
 export class CreateInputValidator {
   @IsString()
@@ -65,4 +67,33 @@ export class UpSertStoreLocationValidator {
   @IsObject()
   @IsNotEmpty()
   public addressPointCoordinates: LatLngLiteral;
+}
+
+export class UpSertStoreHoursValidator {
+  @IsString()
+  @IsNotEmpty()
+  public storeId: string;
+
+  @IsArray()
+  @IsEnum(DayOfWeek, { each: true })
+  @IsNotEmpty()
+  public dayOfWeek: DayOfWeek[];
+
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  public opensAt: Date | null;
+
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date)
+  public closesAt: Date | null;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  public isAllDay: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  public isActive?: boolean;
 }
